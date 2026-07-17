@@ -6,6 +6,23 @@
 <title>차재호 ♥ 박은서 · 2026. 10. 3</title>
 <meta name="description" content="차재호 ♥ 박은서 결혼합니다. 2026년 10월 3일 토요일 오후 2시, 성프란치스코 교육회관">
 
+<!-- ── Open Graph : 카카오톡·페이스북 공유 미리보기 ──────────────
+  · og:image 는 반드시 절대 URL — 카카오는 상대경로를 읽지 못함
+  · 1200x630(1.91:1) 이라야 카톡에서 큰 배너로 노출. 세로 이미지는 작은 썸네일로 축소됨
+  · 카카오는 OG 를 강하게 캐싱함. 내용 수정 후에는 아래에서 캐시 초기화 필요:
+    https://developers.kakao.com/tool/clear/og
+─────────────────────────────────────────────────────────── -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://capstoneid.github.io/wedding/">
+<meta property="og:title" content="차재호 ♥ 박은서 결혼합니다">
+<meta property="og:description" content="2026년 10월 3일 토요일 오후 2시 · 성프란치스코 교육회관">
+<meta property="og:image" content="https://capstoneid.github.io/wedding/images/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="제주 바닷가에 앉은 차재호 박은서 커플">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary_large_image">
+
 <!-- ═══════════════════════════════════════════════════════════
   이미지 교체 가이드 (추후 작업)
   1. HERO 사진   : 아래 <script> 의 HERO_IMG 에 경로 입력
@@ -93,8 +110,8 @@ section{padding:80px 28px;position:relative}
 /* 텍스트는 상단 하늘(빈 공간)에 배치 — 하단 커플 피사체를 가리지 않음 */
 .hero-inner{
   position:relative;z-index:2;flex:1;display:flex;flex-direction:column;
-  justify-content:flex-start;align-items:center;gap:24px;
-  padding:calc(48px + env(safe-area-inset-top)) 28px 42px;text-align:center;
+  justify-content:flex-start;align-items:center;gap:14px;
+  padding:calc(20px + env(safe-area-inset-top)) 28px 42px;text-align:center;
 }
 /* 하단 잔디 위에 놓이므로 muted 대신 잉크색 — muted는 대비 부족으로 사라짐 */
 .hero .scroll-hint{
