@@ -253,6 +253,22 @@ section{padding:80px 28px;position:relative}
   box-shadow:0 24px 70px rgba(0,0,0,.35);
 }
 .lb-stage.land{aspect-ratio:3/2}
+/* 약도 확대: 원본 해상도로 띄우고 컨테이너를 드래그/스크롤해 이동.
+   화면에 맞추면(contain) 372px→380px 라 확대 효과가 없어 글자가 여전히 안 읽힘 */
+.lb-stage.map{
+  width:min(94vw,900px);height:auto;max-height:80dvh;aspect-ratio:auto;
+  overflow:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
+  background:#fff;cursor:grab;
+}
+.lb-stage.map:active{cursor:grabbing}
+/* 베이스 .ph 의 overflow:hidden 이 이미지를 잘라 스크롤 영역이 안 생김 → 해제하고
+   .ph 를 이미지 실폭으로 넓혀야 .lb-stage.map 이 스크롤된다 */
+.lb-stage.map .ph{
+  position:static;display:block;width:1122px;max-width:none;height:auto;
+  overflow:visible;border:none;
+}
+.lb-stage.map .ph img{position:static;width:1122px;max-width:none;height:auto;object-fit:none}
+.lb.map-mode .lb-prev,.lb.map-mode .lb-next{display:none}
 .lb.open .lb-stage{transform:scale(1)}
 .lb-stage .ph{width:100%;height:100%;background:#FFFFFF}
 .lb-count{
@@ -287,8 +303,19 @@ section{padding:80px 28px;position:relative}
 }
 .loc-addr{text-align:center;margin:20px 0 30px;font-size:14.5px;font-weight:300;color:var(--muted);line-height:1.9}
 .loc-addr b{display:block;color:var(--ink);font-weight:600;font-size:16px;letter-spacing:.05em}
-.map-frame{aspect-ratio:4/3;margin-bottom:14px}
+.map-frame{
+  aspect-ratio:4/3;margin-bottom:6px;padding:0;width:100%;display:block;border:none;
+  transition:opacity .2s ease;
+}
 .map-frame .ph{width:100%;height:100%}
+.map-frame:active{opacity:.8}
+.map-frame:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+/* 축소 표시라 글자가 안 읽힘 → 탭 유도 힌트 */
+.map-hint{
+  text-align:center;font-size:11.5px;color:var(--muted);letter-spacing:.06em;
+  margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:5px;
+}
+.map-hint svg{width:12px;height:12px;color:var(--accent)}
 /* 내비 3버튼 */
 .navi{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:22px 0 40px}
 .navi a{
@@ -311,7 +338,8 @@ section{padding:80px 28px;position:relative}
 
 /* ── 07 마음 전하기 ────────────────────────── */
 .gift{background:var(--bg);padding-bottom:64px}
-.gift-sub{text-align:center;font-size:13px;color:var(--muted);font-weight:300;margin:16px 0 30px;line-height:1.9}
+/* 안내 문구 제거로 h2 가 계좌 아코디언에 붙어 여백을 h2 로 이관 */
+.gift h2{margin-bottom:30px}
 /* 계좌 아코디언 (독립) */
 .acc-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:start;margin-bottom:14px}
 .acc{border:1px solid var(--line);border-radius:10px;background:var(--bg-soft);overflow:hidden}
@@ -456,11 +484,15 @@ footer p{font-size:11px;letter-spacing:.25em;color:var(--muted)}
     <h2 class="reveal">오시는 길</h2>
     <p class="loc-addr reveal d1"><b>성프란치스코 교육회관</b>서울특별시 중구 정동길 9</p>
 
-    <div class="map-frame reveal d1">
-      <div class="ph" id="mapImg" aria-label="성프란치스코 교육회관 약도">
+    <button class="map-frame reveal d1" id="mapBtn" type="button" aria-label="약도 크게 보기">
+      <div class="ph" id="mapImg">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M9 20l-6-2V4l6 2 6-2 6 2v14l-6-2-6 2zM9 6v14M15 4v14"/></svg>
       </div>
-    </div>
+    </button>
+    <p class="map-hint reveal d1">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5M11 8v6M8 11h6"/></svg>
+      지도를 누르면 크게 볼 수 있어요
+    </p>
 
     <!-- 내비 연결 -->
     <!-- ponytail: 좌표(37.5662,126.9723)는 예식 전 실좌표 검증 필요 -->
@@ -501,7 +533,6 @@ footer p{font-size:11px;letter-spacing:.25em;color:var(--muted)}
   <section class="gift">
     <span class="eyebrow reveal">With love</span>
     <h2 class="reveal">마음 전하실 곳</h2>
-    <p class="gift-sub reveal d1">참석이 어려우신 분들을 위해<br>계좌번호를 안내드립니다. 너른 양해 부탁드립니다.</p>
 
     <div class="acc-row reveal d1">
       <!-- 신랑측 -->
@@ -673,7 +704,7 @@ const lb = document.getElementById("lb");
 const lbStage = document.getElementById("lbStage");
 const lbImg = document.getElementById("lbImg");
 const lbCount = document.getElementById("lbCount");
-let cur = 0, lastFocus = null;
+let cur = 0, lastFocus = null, mapMode = false;
 
 function renderLb(){
   const g = GALLERY[cur];
@@ -681,19 +712,42 @@ function renderLb(){
   fill(lbImg, g.src, `갤러리 사진 ${cur + 1}`);
   lbCount.textContent = `${cur + 1} / ${GALLERY.length}`;
 }
-function openLb(i){
-  cur = i; renderLb();
+/* 라이트박스 공통 열기 처리 */
+function showLb(){
   lastFocus = document.activeElement;
   lb.classList.add("open");
   lenis.stop();                      // 배경 스크롤 잠금
   document.getElementById("lbClose").focus();
 }
+function openLb(i){
+  mapMode = false;
+  lb.classList.remove("map-mode");
+  lbStage.classList.remove("map");
+  cur = i; renderLb();
+  showLb();
+}
+/* 약도 확대 — 단일 이미지라 이전/다음·스와이프·순환 모두 비활성 */
+function openMap(){
+  mapMode = true;
+  lb.classList.add("map-mode");
+  lbStage.classList.add("map");
+  lbStage.classList.remove("land");
+  fill(lbImg, MAP_IMG, "성프란치스코 교육회관 약도 — 서울 중구 정동길 9");
+  lbCount.textContent = "드래그하여 이동";
+  showLb();
+  lbStage.scrollLeft = (lbStage.scrollWidth - lbStage.clientWidth) / 2;   // 마커가 중앙
+  lbStage.scrollTop  = (lbStage.scrollHeight - lbStage.clientHeight) / 2;
+}
+document.getElementById("mapBtn").addEventListener("click", openMap);
 function closeLb(){
   lb.classList.remove("open");
   lenis.start();
   if (lastFocus) lastFocus.focus();
 }
-function step(d){ cur = (cur + d + GALLERY.length) % GALLERY.length; renderLb(); }
+function step(d){
+  if (mapMode) return;               // 약도는 단일 이미지
+  cur = (cur + d + GALLERY.length) % GALLERY.length; renderLb();
+}
 
 document.getElementById("lbClose").addEventListener("click", closeLb);
 document.getElementById("lbPrev").addEventListener("click", () => step(-1));
@@ -705,10 +759,11 @@ document.addEventListener("keydown", e => {
   if (e.key === "ArrowLeft") step(-1);
   if (e.key === "ArrowRight") step(1);
 });
-/* 스와이프 */
+/* 스와이프 — 약도 모드에선 드래그가 지도 이동이므로 사진 넘김 금지 */
 let tx = 0;
 lb.addEventListener("touchstart", e => { tx = e.touches[0].clientX; }, { passive: true });
 lb.addEventListener("touchend", e => {
+  if (mapMode) return;
   const dx = e.changedTouches[0].clientX - tx;
   if (Math.abs(dx) > 40) step(dx < 0 ? 1 : -1);
 }, { passive: true });
