@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>차재호 ♥ 박은서 모바일청첩장 — 와이어프레임</title>
+<style>
+  /* ── 와이어프레임 = 로파이 흑백. 색·폰트·이미지 없음. 구조만. ── */
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family:-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+    background:#9a9a9a; color:#333; padding:24px 0; -webkit-font-smoothing:antialiased;
+  }
+  /* 모바일 프레임 (실제 청첩장 폭) */
+  .phone {
+    width:390px; margin:0 auto; background:#fff;
+    border:2px solid #222; border-radius:14px; overflow:hidden;
+  }
+  /* 섹션 공통 */
+  section { border-bottom:2px dashed #bbb; padding:20px 22px 26px; position:relative; }
+  /* 좌상단 섹션 번호 태그 */
+  .tag {
+    position:absolute; top:8px; left:8px; background:#222; color:#fff;
+    font-size:10px; font-weight:700; letter-spacing:.5px;
+    padding:3px 8px; border-radius:4px;
+  }
+  .sec-name { font-size:12px; color:#888; text-align:right; margin-bottom:14px; letter-spacing:1px; }
+
+  /* 플레이스홀더 박스 (이미지/지도 자리) */
+  .ph {
+    background:#e9e9e9; border:1.5px dashed #999; border-radius:6px;
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    color:#777; font-size:13px; line-height:1.5; padding:10px;
+  }
+  .ph.hero   { height:520px; }
+  .ph.illust { height:320px; }
+  .ph.map    { height:230px; }
+  .ph.photo  { height:150px; }
+  .cross::before { content:"⤬  "; font-size:16px; color:#aaa; }
+
+  /* 텍스트 라인 스켈레톤 */
+  .line { height:11px; background:#e2e2e2; border-radius:3px; margin:9px auto; }
+  .l-100{ width:100%; } .l-90{ width:90%; } .l-80{ width:80%; } .l-70{ width:70%; } .l-55{ width:55%; } .l-40{ width:40%; }
+  .center { text-align:center; } .stack{ max-width:300px; margin:0 auto; }
+
+  /* 실제 카피 (구조 이해용, 회색 표기) */
+  .copy   { color:#555; font-size:14px; line-height:1.7; text-align:center; }
+  .copy.big { font-size:20px; font-weight:700; color:#222; }
+  .copy.mid { font-size:16px; font-weight:600; color:#333; }
+  .label  { display:inline-block; font-size:11px; color:#999; border:1px solid #ccc; border-radius:3px; padding:1px 6px; margin-bottom:6px; }
+
+  /* 캘린더 목업 */
+  .cal { border:1.5px solid #ddd; border-radius:6px; padding:14px; max-width:250px; margin:14px auto; }
+  .cal-h { text-align:center; font-size:13px; color:#888; margin-bottom:10px; letter-spacing:2px; }
+  .cal-h b { display:block; font-size:34px; color:#333; line-height:1.1; }
+  .cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:5px; }
+  .cal-grid span { text-align:center; font-size:11px; color:#999; padding:4px 0; }
+  .cal-grid .day { color:#444; }
+  .cal-grid .mark { background:#222; color:#fff; border-radius:50%; }
+
+  /* 갤러리 그리드 */
+  .grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; }
+
+  /* 버튼/행 목업 (마음 전하기) */
+  .btn {
+    border:1.5px solid #bbb; border-radius:6px; padding:14px;
+    text-align:center; font-size:14px; color:#555; margin:10px 0; background:#f4f4f4;
+  }
+  .info-table { width:100%; border-collapse:collapse; margin-top:8px; font-size:12px; color:#666; }
+  .info-table th,.info-table td { border:1px solid #ddd; padding:7px 6px; text-align:center; }
+  .info-table th { background:#eee; }
+
+  /* 내비 3분할 */
+  .navi { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-top:14px; }
+  .navi-btn { margin:0; font-size:12px; line-height:1.5; padding:12px 4px; }
+
+  /* 계좌 아코디언 좌우 배열 */
+  .acc-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; align-items:start; }
+  .acc { border:1.5px solid #bbb; border-radius:6px; background:#f4f4f4; overflow:hidden; }
+  .acc summary { list-style:none; cursor:pointer; padding:14px 10px; text-align:center; font-size:13px; color:#555; }
+  .acc summary::-webkit-details-marker { display:none; }
+  .acc[open] summary { border-bottom:1.5px dashed #ccc; background:#ececec; }
+  .acc-body { padding:12px 10px; }
+
+  .note { font-size:11px; color:#999; margin-top:14px; line-height:1.6; }
+  .divider-dot { text-align:center; color:#ccc; margin:16px 0; letter-spacing:6px; }
+  .cap { text-align:center; color:#ddd; font-size:11px; padding:16px; }
+</style>
+</head>
+<body>
+
+<div class="phone">
+
+  <!-- 01 HERO -->
+  <section>
+    <span class="tag">01 · HERO</span>
+    <div class="sec-name">메인 커버</div>
+    <div class="ph hero cross">
+      메인 사진 (풀블리드)<br>제주 야외 커플컷<br><br>오버레이 타이틀 →<br><b>“We are getting MARRIED!”</b>
+    </div>
+    <p class="note center">스크롤 진입 화면 · 배경사진 위 손글씨 영문 타이틀</p>
+  </section>
+
+  <!-- 02 인사말 -->
+  <section>
+    <span class="tag">02 · GREETING</span>
+    <div class="sec-name">인사말 / 모시는 글</div>
+    <div class="divider-dot">✦</div>
+    <p class="copy">거창한 행복보다 매일 함께 웃는 행복을,<br>완벽한 하루보다 서로를 아껴주는 하루를<br>선택하며 살아가겠습니다.</p>
+    <div class="divider-dot">·</div>
+    <p class="copy">가끔은 엉뚱한 장난으로 크게 웃고,<br>힘든 날에는 말없이 서로의 편이 되어주며,<br>항상 서로를 배려하는 예쁜 부부가 되겠습니다.</p>
+  </section>
+
+  <!-- 03 일러스트 -->
+  <section>
+    <span class="tag">03 · IMAGE</span>
+    <div class="sec-name">분위기 일러스트</div>
+    <div class="ph illust cross">3D 일러스트 이미지<br>(초원/산 배경 캐릭터)</div>
+    <p class="note center">감성 전환용 풀폭 이미지 1컷</p>
+  </section>
+
+  <!-- 04 예식 정보 -->
+  <section>
+    <span class="tag">04 · DETAILS</span>
+    <div class="sec-name">예식 일시 · 장소 · 혼주</div>
+
+    <p class="copy big">2026. 10. 3. (토) 오후 2시</p>
+    <p class="copy mid" style="margin-top:6px;">성프란치스코 교육회관</p>
+
+    <!-- 캘린더 목업 -->
+    <div class="cal">
+      <div class="cal-h">2 0 2 6<b>10</b>OCTOBER</div>
+      <div class="cal-grid">
+        <span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span>
+        <span></span><span></span><span></span><span></span><span class="day">1</span><span class="day">2</span><span class="mark">3</span>
+        <span class="day">4</span><span class="day">5</span><span class="day">6</span><span class="day">7</span><span class="day">8</span><span class="day">9</span><span class="day">10</span>
+        <span class="day">11</span><span class="day">12</span><span class="day">13</span><span class="day">14</span><span class="day">15</span><span class="day">16</span><span class="day">17</span>
+        <span class="day">18</span><span class="day">19</span><span class="day">20</span><span class="day">21</span><span class="day">22</span><span class="day">23</span><span class="day">24</span>
+        <span class="day">25</span><span class="day">26</span><span class="day">27</span><span class="day">28</span><span class="day">29</span><span class="day">30</span><span class="day">31</span>
+      </div>
+    </div>
+
+    <div class="divider-dot">·</div>
+
+    <!-- 혼주 / 신랑신부 -->
+    <p class="copy">차 길환 · 윤 영옥 <span style="color:#999">의 아들</span></p>
+    <p class="copy mid">신랑 <b>차 재호</b></p>
+    <br>
+    <p class="copy">박 광우 · 엄 경숙 <span style="color:#999">의 딸</span></p>
+    <p class="copy mid">신부 <b>박 은서</b></p>
+
+    <div class="divider-dot">·</div>
+    <p class="copy" style="font-size:13px;">저희 두 사람의 첫걸음을 축복해 주시기 위해<br>귀한 시간을 내어 주시는 모든 분들께<br>진심으로 감사드립니다.</p>
+  </section>
+
+  <!-- 05 갤러리 -->
+  <section>
+    <span class="tag">05 · GALLERY</span>
+    <div class="sec-name">갤러리</div>
+    <p class="label">Gallery</p>
+    <div class="grid">
+      <div class="ph photo cross"></div>
+      <div class="ph photo cross"></div>
+      <div class="ph photo cross"></div>
+      <div class="ph photo cross"></div>
+      <div class="ph photo cross"></div>
+      <div class="ph photo cross"></div>
+    </div>
+    <p class="note center">썸네일 그리드 · 탭 시 전체화면 슬라이드(옵션)</p>
+  </section>
+
+  <!-- 06 오시는 길 -->
+  <section>
+    <span class="tag">06 · LOCATION</span>
+    <div class="sec-name">오시는 길</div>
+    <p class="copy mid">오시는 길</p>
+    <div class="ph map cross" style="margin-top:12px;">약도 / 지도<br>(성프란치스코 교육회관)</div>
+
+    <p class="label" style="margin-top:18px;">🚇 지하철 정보</p>
+    <table class="info-table">
+      <tr><th>노선</th><th>출구</th></tr>
+      <tr><td>5호선</td><td>서대문역 5번 (경향신문사 5분)</td></tr>
+      <tr><td>1·2호선</td><td>시청역 1·12번 (덕수궁길 15분)</td></tr>
+    </table>
+
+    <p class="label" style="margin-top:16px;">🚌 버스 정보</p>
+    <table class="info-table">
+      <tr><th>정류장</th><th>구분</th><th>번호</th></tr>
+      <tr><td rowspan="3">서울역사<br>박물관</td><td>간선</td><td>101·160·270·602 …</td></tr>
+      <tr><td>일반</td><td>1002·7019</td></tr>
+      <tr><td>광역</td><td>1004·9701·8600 …</td></tr>
+    </table>
+    <!-- 내비 연결 버튼 3분할 -->
+    <div class="navi">
+      <div class="btn navi-btn">🧭<br>카카오내비</div>
+      <div class="btn navi-btn">🗺️<br>네이버지도</div>
+      <div class="btn navi-btn">🚗<br>티맵</div>
+    </div>
+    <p class="note center">각 버튼 탭 → 해당 앱 길찾기 실행(장소 좌표 전달)</p>
+  </section>
+
+  <!-- 07 마음 전하기 -->
+  <section style="border-bottom:none;">
+    <span class="tag">07 · ACTIONS</span>
+    <div class="sec-name">마음 전하기 · 공유</div>
+
+    <!-- 계좌번호: 신랑측/신부측 좌우 배열 아코디언 -->
+    <p class="copy mid" style="margin-bottom:12px;">💳 마음 전하실 곳</p>
+    <div class="acc-row">
+      <details class="acc">
+        <summary>신랑측 계좌 ▾</summary>
+        <div class="acc-body">
+          <div class="line l-90"></div><div class="line l-70"></div>
+          <p class="note">신랑 · 혼주 계좌<br>은행 / 예금주 / 번호<br>[복사] 버튼</p>
+        </div>
+      </details>
+      <details class="acc">
+        <summary>신부측 계좌 ▾</summary>
+        <div class="acc-body">
+          <div class="line l-90"></div><div class="line l-70"></div>
+          <p class="note">신부 · 혼주 계좌<br>은행 / 예금주 / 번호<br>[복사] 버튼</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="btn">🔗 청첩장 전하기 (카카오톡 공유)</div>
+
+    <p class="label" style="margin-top:16px;">＋ 사랑의 쌀 기증 안내</p>
+    <p class="note">· 축하 화환은 성당에 반입 불가<br>· 화환 대신 쌀/성금 기부 권장 (쌀·리본만 반입)<br>· 성금은 교육회관 홈페이지 ‘혼인미사’ 통해 기부</p>
+  </section>
+
+  <div class="cap">— 차재호 ♥ 박은서 모바일청첩장 · 로파이 와이어프레임 —</div>
+
+</div>
+</body>
+</html>
