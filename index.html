@@ -38,6 +38,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
+/* 히어로 타이틀 손글씨 (온글잎 박다현체) — swap 이라 로딩 전엔 폴백으로 표시 */
+@font-face {
+  font-family:'OngleipParkDahyeon';
+  src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/2411-3@1.0/Ownglyph_ParkDaHyun.woff2') format('woff2');
+  font-weight:normal;
+  font-display:swap;
+}
+
 /* ── 디자인 토큰 ───────────────────────────── */
 :root{
   --bg:#FFFFFF;
@@ -48,6 +56,7 @@
   --accent:#B98E5E;
   --serif:"Noto Serif KR",serif;
   --script:"Great Vibes",cursive;
+  --hand:"OngleipParkDahyeon","Great Vibes",cursive;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -121,7 +130,7 @@ section{padding:80px 28px;position:relative}
 }
 .hero .scroll-hint span{background:var(--ink)}
 .hero-top{font-size:11px;letter-spacing:.45em;color:var(--muted)}
-.hero-title{font-family:var(--script);font-size:clamp(52px,15vw,68px);line-height:1.15;color:var(--ink)}
+.hero-title{font-family:var(--hand);font-size:clamp(52px,15vw,68px);line-height:1.15;color:var(--ink)}
 /* 손글씨 라이팅: 라인별 좌→우 펜 스윕 */
 .hero-title .line{
   display:block;
