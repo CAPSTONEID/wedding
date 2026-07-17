@@ -457,7 +457,7 @@ footer p{font-size:11px;letter-spacing:.25em;color:var(--muted)}
     <p class="loc-addr reveal d1"><b>성프란치스코 교육회관</b>서울특별시 중구 정동길 9</p>
 
     <div class="map-frame reveal d1">
-      <div class="ph" aria-label="약도 이미지 자리">
+      <div class="ph" id="mapImg" aria-label="성프란치스코 교육회관 약도">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M9 20l-6-2V4l6 2 6-2 6 2v14l-6-2-6 2zM9 6v14M15 4v14"/></svg>
       </div>
     </div>
@@ -603,6 +603,7 @@ footer p{font-size:11px;letter-spacing:.25em;color:var(--muted)}
    type: "l" = 가로(3:2), "p" = 세로(3:4)
 ═══════════════════════════════════════════ */
 const HERO_IMG = "images/P_0.jpg";  // 메인 커버 사진 (9:16 세로)
+const MAP_IMG  = "images/map.jpg";  // 06 오시는 길 약도
 /* type: "f"=세로 풀폭(3:4, 1장), "p"=세로 반폭(3:4, 2장 나란히)
    ※ 보유 사진이 전부 3:4 세로라 가로 타입(l/w/t)은 미사용 — 넣으면 위아래가 잘림 */
 const GALLERY = [
@@ -627,6 +628,9 @@ function fill(el, src, alt, eager){
 
 /* HERO */
 fill(document.getElementById("heroImg"), HERO_IMG, "차재호 박은서 메인 웨딩 사진", true);
+
+/* 06 약도 */
+fill(document.getElementById("mapImg"), MAP_IMG, "성프란치스코 교육회관 약도 — 서울 중구 정동길 9, 정동사거리 남쪽");
 
 /* ── 03 랜덤 포토 : 갤러리에서 무작위 1장 ── */
 const momentIdx = Math.floor(Math.random() * GALLERY.length);
