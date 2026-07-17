@@ -46,6 +46,14 @@
   font-display:swap;
 }
 
+/* 히어로 제외 전 구간 본문/스크립트 폰트 (태백은하수체) */
+@font-face {
+  font-family:'TaebaekGalaxy';
+  src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/TAEBAEKmilkyway.woff2') format('woff2');
+  font-weight:normal;
+  font-display:swap;
+}
+
 /* ── 디자인 토큰 ───────────────────────────── */
 :root{
   --bg:#FFFFFF;
@@ -54,8 +62,8 @@
   --muted:#9A928A;
   --line:#E9E4DD;
   --accent:#B98E5E;
-  --serif:"Noto Serif KR",serif;
-  --script:"Great Vibes",cursive;
+  --serif:"TaebaekGalaxy","Noto Serif KR",serif;
+  --script:"TaebaekGalaxy","Great Vibes",cursive;
   --hand:"OngleipParkDahyeon","Great Vibes",cursive;
 }
 *{margin:0;padding:0;box-sizing:border-box}
